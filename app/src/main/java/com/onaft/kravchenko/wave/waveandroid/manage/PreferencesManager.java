@@ -6,9 +6,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.onaft.kravchenko.wave.waveandroid.model.Account;
 import com.onaft.kravchenko.wave.waveandroid.model.Employee;
+import com.onaft.kravchenko.wave.waveandroid.model.Event;
 import com.onaft.kravchenko.wave.waveandroid.util.Wave;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class PreferencesManager {
     private SharedPreferences mSharedPreferences;
@@ -49,5 +51,22 @@ public class PreferencesManager {
         }.getType();
         Employee employee = gson.fromJson(json, type);
         return employee;
+    }
+
+    public void saveShooting(List<Event> data){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        editor.putString(ConstantManager.KEY_SHOOTING, json);
+        editor.apply();
+    }
+
+    public List<Event> loadShooting() {
+        Gson gson = new Gson();
+        String json = mSharedPreferences.getString(ConstantManager.KEY_SHOOTING, "");
+        Type type = new TypeToken<List<Event>>() {
+        }.getType();
+        List<Event> events = gson.fromJson(json, type);
+        return events;
     }
 }

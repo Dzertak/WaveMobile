@@ -1,20 +1,37 @@
 package com.onaft.kravchenko.wave.waveandroid.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class Event {
+    @SerializedName("id_event")
+    @Expose
     private int id_event;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("description")
+    @Expose
     private String description;
+    @SerializedName("date_start")
+    @Expose
     private Date date_start;
+    @SerializedName("date_end")
+    @Expose
     private Date date_end;
+    @SerializedName("address")
+    @Expose
+    private String address;
 
-    public Event(int id_event, String name, String description, Date date_start, Date date_end) {
+    public Event(int id_event, String name, String description, Date date_start, Date date_end, String address) {
         this.id_event = id_event;
         this.name = name;
         this.description = description;
         this.date_start = date_start;
         this.date_end = date_end;
+        this.address = address;
     }
 
     public int getId_event() {
@@ -55,5 +72,13 @@ public class Event {
 
     public void setDate_end(Date date_end) {
         this.date_end = date_end;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
