@@ -1,16 +1,37 @@
 package com.onaft.kravchenko.wave.waveandroid.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class Employee {
+    @SerializedName("id_employee")
+    @Expose
     private int id_employee;
+    @SerializedName("date_reg")
+    @Expose
     private Date date_reg;
+    @SerializedName("date_birthday")
+    @Expose
     private Date date_birthday;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("code_pas")
+    @Expose
     private String code_pas;
+    @SerializedName("code_ident")
+    @Expose
     private String code_ident;
+    @SerializedName("phone")
+    @Expose
     private String phone;
+    @SerializedName("address")
+    @Expose
     private String address;
+    @SerializedName("id_position")
+    @Expose
     private int id_position;
 
     public Employee(int id_employee, Date date_reg, Date date_birthday, String name, String code_pas, String code_ident, String phone, String address, int position) {
@@ -95,5 +116,20 @@ public class Employee {
 
     public void setPosition(int position) {
         this.id_position = position;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id_employee=" + id_employee +
+                ", date_reg=" + date_reg +
+                ", date_birthday=" + date_birthday +
+                ", name='" + name + '\'' +
+                ", code_pas='" + code_pas + '\'' +
+                ", code_ident='" + code_ident + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", id_position=" + id_position +
+                '}';
     }
 }

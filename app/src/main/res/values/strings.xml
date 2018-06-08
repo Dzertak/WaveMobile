@@ -17,7 +17,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Wawe Solution</string>
+    <string name="nav_header_title">Wave Solution</string>
     <string name="nav_header_subtitle">special for you</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -100,4 +100,18 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_create_shooting">CreateShootingActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string-array name="mobile_manufacturers">
+        <item>Select one Item</item>
+        <item>Samsung</item>
+        <item>Foxconn</item>
+        <item>Apple</item>
+        <item>Oppo</item>
+        <item>Nokia</item>
+        <item>LYF</item>
+        <item>Xiaomi</item>
+        <item>Huawei</item>
+        <item>Asus</item>
+        <item>Lenovo</item>
+    </string-array>
 </resources>

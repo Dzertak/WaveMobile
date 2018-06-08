@@ -1,8 +1,10 @@
 package com.onaft.kravchenko.wave.waveandroid;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +20,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.onaft.kravchenko.wave.waveandroid.fragment.CreateShootingEventFragment;
+import com.onaft.kravchenko.wave.waveandroid.fragment.CreateShootingGroupFragment;
+import com.onaft.kravchenko.wave.waveandroid.manage.ConstantManager;
+import com.onaft.kravchenko.wave.waveandroid.manage.DataManager;
+import com.onaft.kravchenko.wave.waveandroid.model.Customer;
+import com.onaft.kravchenko.wave.waveandroid.model.Employee;
+import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.view.View.GONE;
 
 public class CreateShootingActivity extends AppCompatActivity {
 
@@ -32,6 +53,9 @@ public class CreateShootingActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private View mProgressView;
+    private ArrayList<Integer> mArrayListFlags;
+    private DataManager mDataManager;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -42,6 +66,62 @@ public class CreateShootingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_shooting);
+        mArrayListFlags = new ArrayList<>();
+        mDataManager = DataManager.getInstance();
+        if (mArrayListFlags.size()!=3) {
+            Call<List<Employee>> listCall = mDataManager.employeesAll();
+            listCall.enqueue(new Callback<List<Employee>>() {
+                @Override
+                public void onResponse(Call<List<Employee>> call, Response<List<Employee>> response) {
+                    mArrayListFlags.add(0);
+                    if (mArrayListFlags.size() == 3)
+                        mProgressView.setVisibility(GONE);
+                }
+
+                @Override
+                public void onFailure(Call<List<Employee>> call, Throwable t) {
+                    mArrayListFlags.add(0);
+                    if (mArrayListFlags.size() == 3)
+                        mProgressView.setVisibility(GONE);
+                }
+            });
+            Call<List<Customer>> listCall2 = mDataManager.customersAll();
+            listCall2.enqueue(new Callback<List<Customer>>() {
+                @Override
+                public void onResponse(Call<List<Customer>> call, Response<List<Customer>> response) {
+                    mArrayListFlags.add(1);
+                    if (mArrayListFlags.size() == 3)
+                        mProgressView.setVisibility(GONE);
+                }
+
+                @Override
+                public void onFailure(Call<List<Customer>> call, Throwable t) {
+                    mArrayListFlags.add(1);
+                    if (mArrayListFlags.size() == 3)
+                        mProgressView.setVisibility(GONE);
+                }
+
+            });
+            Call<List<TypeShooting>> listCall3 = mDataManager.typeShootingAll();
+            listCall3.enqueue(new Callback<List<TypeShooting>>() {
+                @Override
+                public void onResponse(Call<List<TypeShooting>> call, Response<List<TypeShooting>> response) {
+                    mArrayListFlags.add(2);
+                    if (mArrayListFlags.size() == 3)
+                        mProgressView.setVisibility(GONE);
+                }
+
+                @Override
+                public void onFailure(Call<List<TypeShooting>> call, Throwable t) {
+                    mArrayListFlags.add(2);
+                    if (mArrayListFlags.size() == 3)
+                        mProgressView.setVisibility(GONE);
+                }
+            });
+        }
+
+        mProgressView = findViewById(R.id.login_progress);
+        mProgressView.bringToFront();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.arrow_left);
@@ -59,7 +139,7 @@ public class CreateShootingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Не все данные заплнены", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Не все данные заполнены", Snackbar.LENGTH_LONG)
                         .setAction("Где?", t ->{
                             Toast.makeText(CreateShootingActivity.this, "Здесь!", Toast.LENGTH_SHORT).show();
                         }).show();
@@ -143,21 +223,26 @@ public class CreateShootingActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private SparseArrayCompat<Fragment> mMapTab;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            mMapTab = new SparseArrayCompat<>();
+            mMapTab.put(ConstantManager.KEY_TAB_ONE,CreateShootingGroupFragment.newInstance(getApplicationContext()));
+           // mMapTab.put(ConstantManager.KEY_TAB_TWO, CreateShootingEventFragment.newInstance(getApplicationContext(),));
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return mMapTab.get(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return mMapTab.size();
         }
     }
 }

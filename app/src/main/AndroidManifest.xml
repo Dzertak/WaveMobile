@@ -46,7 +46,10 @@
         <activity
             android:name=".CreateShootingActivity"
             android:label="@string/title_activity_create_shooting"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ShootingActivity" />
+        <activity android:name=".ToolsActivity"></activity>
     </application>
 
 </manifest>

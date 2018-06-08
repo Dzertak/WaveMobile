@@ -24,14 +24,21 @@ public class Event {
     @SerializedName("address")
     @Expose
     private String address;
+    @SerializedName("id_shooting")
+    @Expose
+    private int id_shooting;
 
-    public Event(int id_event, String name, String description, Date date_start, Date date_end, String address) {
+    public Event() {
+    }
+
+    public Event(int id_event, String name, String description, Date date_start, Date date_end, String address, int id_shooting) {
         this.id_event = id_event;
         this.name = name;
         this.description = description;
         this.date_start = date_start;
         this.date_end = date_end;
         this.address = address;
+        this.id_shooting = id_shooting;
     }
 
     public int getId_event() {
@@ -80,5 +87,13 @@ public class Event {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getId_shooting() {
+        return id_shooting;
+    }
+
+    public void setId_shooting(int id_shooting) {
+        this.id_shooting = id_shooting;
     }
 }

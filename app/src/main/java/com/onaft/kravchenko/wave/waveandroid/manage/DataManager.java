@@ -4,7 +4,12 @@ import com.onaft.kravchenko.wave.waveandroid.api.AuthorizationRestService;
 import com.onaft.kravchenko.wave.waveandroid.api.ServiceConnector;
 import com.onaft.kravchenko.wave.waveandroid.api.ShootingRestService;
 import com.onaft.kravchenko.wave.waveandroid.model.Account;
+import com.onaft.kravchenko.wave.waveandroid.model.Contract;
+import com.onaft.kravchenko.wave.waveandroid.model.Customer;
+import com.onaft.kravchenko.wave.waveandroid.model.Employee;
 import com.onaft.kravchenko.wave.waveandroid.model.Event;
+import com.onaft.kravchenko.wave.waveandroid.model.Shooting;
+import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
 
 import java.util.List;
 
@@ -45,8 +50,32 @@ public class DataManager {
         return mShootingRestService.shootingEventById(id_employee);
     }
 
+    public Call<List<Employee>> employeesByIdShooting(String id_shooting){
+        return mShootingRestService.employeesByIdShooting(id_shooting);
+    }
+
+    public Call<Customer> customerByIdShooting(String id_shooting){
+        return mShootingRestService.customerByIdShooting(id_shooting);
+    }
+    public Call<Contract> contractByIdShooting(String id_shooting){
+        return mShootingRestService.contractByIdShooting(id_shooting);
+    }
+    public Call<Shooting> shootingByIdShooting(String id_shooting){
+        return mShootingRestService.shootingByIdShooting(id_shooting);
+    }
+
     public Call<List<Event>> shootingEventAll(){
         return mShootingRestService.shootingEventAll();
+    }
+
+    public Call<List<Customer>> customersAll(){
+        return mShootingRestService.customersAll();
+    }
+    public Call<List<Employee>> employeesAll(){
+        return mShootingRestService.employeesAll();
+    }
+    public Call<List<TypeShooting>> typeShootingAll(){
+        return mShootingRestService.typeShootingAll();
     }
 
 }

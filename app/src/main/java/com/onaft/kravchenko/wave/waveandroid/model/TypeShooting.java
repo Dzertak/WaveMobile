@@ -1,7 +1,14 @@
 package com.onaft.kravchenko.wave.waveandroid.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class TypeShooting {
+    @SerializedName("id_type_shooting")
+    @Expose
     private int id_type_shooting;
+    @SerializedName("name")
+    @Expose
     private String name;
 
     public TypeShooting(int id_type_shooting, String name) {

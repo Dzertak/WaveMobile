@@ -92,8 +92,6 @@ public class MainActivity extends AppCompatActivity
 
         //This setData from other class
         adapter.setData(data);
-
-       // mDataManager.getmPreferencesManager().saveInfoLicList(data);
     }
 
     private void settingView(){
@@ -105,7 +103,9 @@ public class MainActivity extends AppCompatActivity
 
 
         mFloatingActionButtonAddShooting.setOnClickListener(t->{
-            startActivity(new Intent(getApplicationContext(),CreateShootingActivity.class));
+            Intent intent = new Intent(getApplicationContext(),ShootingActivity.class);
+            intent.putExtra("shooting_type", false);
+            startActivity(intent);
         });
 
 
@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity
                 mSwipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(MainActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                 mEvents = response.body();
+                mDataManager.getmPreferencesManager().saveShooting(mEvents);
                 refreshList(mEvents);
             }
 

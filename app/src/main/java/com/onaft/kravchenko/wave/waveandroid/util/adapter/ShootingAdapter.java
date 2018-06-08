@@ -1,5 +1,6 @@
 package com.onaft.kravchenko.wave.waveandroid.util.adapter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.onaft.kravchenko.wave.waveandroid.R;
+import com.onaft.kravchenko.wave.waveandroid.ShootingActivity;
 import com.onaft.kravchenko.wave.waveandroid.model.Event;
 
 import java.text.DateFormat;
@@ -38,6 +40,15 @@ public class ShootingAdapter extends RecyclerView.Adapter<ShootingAdapter.Shooti
 
     @Override
     public void onBindViewHolder(@NonNull ShootingViewHolder holder, int position) {
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),ShootingActivity.class);
+                intent.putExtra("shooting_type", true);
+                intent.putExtra("id_shooting", String.valueOf(mEvents.get(holder.getAdapterPosition()).getId_shooting()));
+                v.getContext().startActivity(intent);
+            }
+        });
         holder.title.setText(mEvents.get(holder.getAdapterPosition()).getName());
         holder.description.setText(mEvents.get(holder.getAdapterPosition()).getDescription());
         holder.address.setText(mEvents.get(holder.getAdapterPosition()).getAddress());
