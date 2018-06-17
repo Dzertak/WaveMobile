@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.onaft.kravchenko.wave.waveandroid.R;
 import com.onaft.kravchenko.wave.waveandroid.manage.DataManager;
@@ -18,6 +22,9 @@ import com.onaft.kravchenko.wave.waveandroid.model.Employee;
 import com.onaft.kravchenko.wave.waveandroid.model.Event;
 import com.onaft.kravchenko.wave.waveandroid.model.Shooting;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,10 +39,10 @@ import retrofit2.Response;
 public class CreateShootingEventFragment extends Fragment {
 
     private Context mContext;
-    private String id_shooting;
     public static final String TAG = "CreateShootingEventFragment";
     private TextView mTextViewPurpose, mTextViewType, mTextViewEvent, mTextViewCustomer,
-            mTextViewOperator, mTextViewJurnalist, mTextViewDriver;
+            mTextViewOperator, mTextViewJurnalist, mTextViewDriver, mTextViewStartDate,
+            mTextViewEndDate, mTextViewEventDescription, mTextViewEventAddress;
     private DataManager mDataManager;
     private Contract mContract;
     private Event mEvent;
@@ -47,11 +54,11 @@ public class CreateShootingEventFragment extends Fragment {
     }
 
 
-    public static CreateShootingEventFragment newInstance(Context context, String id_shooting) {
+    public static CreateShootingEventFragment newInstance(Context context, Event event) {
         CreateShootingEventFragment fragment = new CreateShootingEventFragment();
         Bundle args = new Bundle();
         fragment.setContext(context);
-        fragment.setId_shooting(id_shooting);
+        fragment.setEvent(event);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,30 +76,52 @@ public class CreateShootingEventFragment extends Fragment {
         mTextViewJurnalist = getView().findViewById(R.id.textView_view_shooting_jurnalist);
         mTextViewType = getView().findViewById(R.id.textView_view_shooting_types);
         mTextViewOperator = getView().findViewById(R.id.textView_view_shooting_operator);
+        mTextViewEventDescription = getView().findViewById(R.id.textView_view_shooting_event_description);
+        mTextViewEndDate = getView().findViewById(R.id.textView_view_shooting_date_end);
+        mTextViewStartDate = getView().findViewById(R.id.textView_view_shooting_date_start);
+        mTextViewEventAddress = getView().findViewById(R.id.textView_view_shooting_event_address);
     }
 
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_shooting_edit: {
+                Toast.makeText(mContext, "Редактировать", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.shooting_edit, menu);
+    }
+
 
     public void setContext(Context context) {
         mContext = context;
     }
 
-    public void setId_shooting(String id_shooting){
-        this.id_shooting = id_shooting;
+    public void setEvent(Event event) {
+        mEvent = event;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        dataLoad();
-        List<Event> events = mDataManager.getmPreferencesManager().loadShooting();
-        for (Event ev: events)
-            if (ev.getId_shooting()==Integer.valueOf(id_shooting))
-                mTextViewEvent.setText(ev.getName());
+        dataLoad(String.valueOf(mEvent.getShooting().getId_shooting()));
     }
 
     @Override
@@ -102,7 +131,22 @@ public class CreateShootingEventFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create_shooting_event, container, false);
     }
 
-    private void dataLoad(){
+    private void dataLoad(String id_shooting){
+        mTextViewEvent.setText(mEvent.getName());
+        mTextViewType.setText(mEvent.getShooting().getTypeShooting().getName());
+        mTextViewPurpose.setText(mEvent.getShooting().getPurpose());
+        mTextViewEventDescription.setText(mEvent.getDescription());
+        mTextViewEventAddress.setText(mEvent.getAddress());
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm");
+        try {
+            mTextViewStartDate.setText(df.format(new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(mEvent.getShooting().getDate_start())));
+            mTextViewEndDate.setText(df.format(new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse(mEvent.getShooting().getDate_end())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //mTextViewStartDate.setText(df.format(mEvent.getShooting().getDate_start()));
+        //mTextViewEndDate.setText(df.format(mEvent.getShooting().getDate_end()));
+
         Call<Customer> customerCall = mDataManager.customerByIdShooting(id_shooting);
         customerCall.enqueue(new Callback<Customer>() {
             @Override
@@ -128,20 +172,7 @@ public class CreateShootingEventFragment extends Fragment {
 
             }
         });
-        Call<Shooting> shootingCall = mDataManager.shootingByIdShooting(id_shooting);
-        shootingCall.enqueue(new Callback<Shooting>() {
-            @Override
-            public void onResponse(Call<Shooting> call, Response<Shooting> response) {
 
-                mTextViewPurpose.setText(response.body().getPurpose());
-                mTextViewType.setText(response.body().getTypeShooting().getName());
-            }
-
-            @Override
-            public void onFailure(Call<Shooting> call, Throwable t) {
-
-            }
-        });
         Call<List<Employee>> listCall = mDataManager.employeesByIdShooting(id_shooting);
         listCall.enqueue(new Callback<List<Employee>>() {
             @Override

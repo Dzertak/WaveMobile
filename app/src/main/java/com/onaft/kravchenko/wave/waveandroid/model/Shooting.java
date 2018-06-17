@@ -1,7 +1,10 @@
 package com.onaft.kravchenko.wave.waveandroid.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.sql.Timestamp;
 
 public class Shooting {
 
@@ -15,13 +18,24 @@ public class Shooting {
     @Expose
     private TypeShooting typeShooting;
 
+    @SerializedName("date_start")
+    @Expose
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    private String date_start;
+    @SerializedName("date_end")
+    @Expose
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    private String date_end;
+
     public Shooting() {
     }
 
-    public Shooting(int id_shooting, String purpose, TypeShooting typeShooting) {
+    public Shooting(int id_shooting, String purpose, TypeShooting typeShooting, String date_start, String date_end) {
         this.id_shooting = id_shooting;
         this.purpose = purpose;
         this.typeShooting = typeShooting;
+        this.date_start = date_start;
+        this.date_end = date_end;
     }
 
     public int getId_shooting() {
@@ -48,33 +62,30 @@ public class Shooting {
         this.typeShooting = typeShooting;
     }
 
-    public class Type{
-        @SerializedName("id_type_shooting")
-        @Expose
-        private int id_type_shooting;
-        @SerializedName("name")
-        @Expose
-        private String name;
+    public String getDate_start() {
+        return date_start;
+    }
 
-        public Type(int id_type_shooting, String name) {
-            this.id_type_shooting = id_type_shooting;
-            this.name = name;
-        }
+    public void setDate_start(String date_start) {
+        this.date_start = date_start;
+    }
 
-        public int getId_type_shooting() {
-            return id_type_shooting;
-        }
+    public String getDate_end() {
+        return date_end;
+    }
 
-        public void setId_type_shooting(int id_type_shooting) {
-            this.id_type_shooting = id_type_shooting;
-        }
+    public void setDate_end(String date_end) {
+        this.date_end = date_end;
+    }
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id_shooting\":" + id_shooting +
+                ", \"purpose\":\"" + purpose + '\"' +
+                ", \"typeShooting\":" + typeShooting.toString() +
+                ", \"date_start\":\"" + date_start + '\"' +
+                ", \"date_end\":\"" + date_end + '\"' +
+                '}';
     }
 }

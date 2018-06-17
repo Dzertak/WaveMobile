@@ -10,9 +10,12 @@ import com.onaft.kravchenko.wave.waveandroid.model.Employee;
 import com.onaft.kravchenko.wave.waveandroid.model.Event;
 import com.onaft.kravchenko.wave.waveandroid.model.Shooting;
 import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
+import com.onaft.kravchenko.wave.waveandroid.util.ShootingGroupRequest;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class DataManager {
@@ -68,6 +71,10 @@ public class DataManager {
         return mShootingRestService.shootingEventAll();
     }
 
+    public Call<List<Event>> findEvents(){
+        return mShootingRestService.findEvents();
+    }
+
     public Call<List<Customer>> customersAll(){
         return mShootingRestService.customersAll();
     }
@@ -78,4 +85,27 @@ public class DataManager {
         return mShootingRestService.typeShootingAll();
     }
 
+    public Call<Customer> addCustomer(Customer customer){
+        return mShootingRestService.addCustomer(customer);
+    }
+
+    public Call<Contract> addContract(Contract contract){
+        return mShootingRestService.addContract(contract);
+    }
+
+    public Call<Event> addEvent(Event event){
+        return mShootingRestService.addEvent(event);
+    }
+
+    public Call<Shooting> addShooting(Shooting shooting){
+        return mShootingRestService.addShooting(shooting);
+    }
+
+    public Call<String> addShootingGroup(ShootingGroupRequest groupRequest){
+        return mShootingRestService.addShootingGroup(groupRequest);
+    }
+
+    public Call<String> deleteShooting(String id_shooting){
+        return mShootingRestService.deleteShooting(id_shooting);
+    }
 }

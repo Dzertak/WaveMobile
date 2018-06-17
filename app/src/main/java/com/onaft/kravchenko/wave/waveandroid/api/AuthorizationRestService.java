@@ -9,5 +9,4 @@ import retrofit2.http.Query;
 public interface AuthorizationRestService {
     @GET("entities/authorize")
     Call<Account> authorization(@Query("login") String login, @Query("password") String password);
-
 }

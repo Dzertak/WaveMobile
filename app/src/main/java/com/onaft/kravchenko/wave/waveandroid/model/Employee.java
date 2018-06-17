@@ -9,12 +9,6 @@ public class Employee {
     @SerializedName("id_employee")
     @Expose
     private int id_employee;
-    @SerializedName("date_reg")
-    @Expose
-    private Date date_reg;
-    @SerializedName("date_birthday")
-    @Expose
-    private Date date_birthday;
     @SerializedName("name")
     @Expose
     private String name;
@@ -34,16 +28,14 @@ public class Employee {
     @Expose
     private int id_position;
 
-    public Employee(int id_employee, Date date_reg, Date date_birthday, String name, String code_pas, String code_ident, String phone, String address, int position) {
+    public Employee(int id_employee, String name, String code_pas, String code_ident, String phone, String address, int id_position) {
         this.id_employee = id_employee;
-        this.date_reg = date_reg;
-        this.date_birthday = date_birthday;
         this.name = name;
         this.code_pas = code_pas;
         this.code_ident = code_ident;
         this.phone = phone;
         this.address = address;
-        this.id_position = position;
+        this.id_position = id_position;
     }
 
     public int getId_employee() {
@@ -52,22 +44,6 @@ public class Employee {
 
     public void setId_employee(int id_employee) {
         this.id_employee = id_employee;
-    }
-
-    public Date getDate_reg() {
-        return date_reg;
-    }
-
-    public void setDate_reg(Date date_reg) {
-        this.date_reg = date_reg;
-    }
-
-    public Date getDate_birthday() {
-        return date_birthday;
-    }
-
-    public void setDate_birthday(Date date_birthday) {
-        this.date_birthday = date_birthday;
     }
 
     public String getName() {
@@ -122,8 +98,6 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "id_employee=" + id_employee +
-                ", date_reg=" + date_reg +
-                ", date_birthday=" + date_birthday +
                 ", name='" + name + '\'' +
                 ", code_pas='" + code_pas + '\'' +
                 ", code_ident='" + code_ident + '\'' +

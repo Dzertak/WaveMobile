@@ -42,6 +42,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin" >
+            <TextView
+                android:id="@+id/textView_shooting_date_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Start: (click)"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/textView_shooting_date_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="End: (click)"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,14 +84,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                android:id="@+id/searchSpinner_shooting_event"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/searchSpinner_shooting_event"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/textView_shooting_event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="description"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"/>
+            </LinearLayout>
+
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_shooting_event"
@@ -76,9 +121,12 @@
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
+
+
+
         </LinearLayout>
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -104,7 +152,7 @@
                 android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
         </LinearLayout>
-
+-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

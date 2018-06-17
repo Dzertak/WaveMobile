@@ -14,27 +14,22 @@ public class ServiceConnector {
      *******/
     static final String ROOT_URL = "https://mywave.herokuapp.com/";
 
+
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
+    private static Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
 
     private static Retrofit.Builder sBuilder =
             new Retrofit.Builder()
                     .baseUrl(ROOT_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
-
-
+                    .addConverterFactory(GsonConverterFactory.create(gson));
 
     public static <S> S createService(Class<S> serviceClass) {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-
         httpClient.addInterceptor(logging);
-
-
         Retrofit retrofit = sBuilder
                 .client(httpClient.build())
                 .build();

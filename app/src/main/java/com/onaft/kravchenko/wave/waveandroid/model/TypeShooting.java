@@ -11,6 +11,7 @@ public class TypeShooting {
     @Expose
     private String name;
 
+    public TypeShooting(){}
     public TypeShooting(int id_type_shooting, String name) {
         this.id_type_shooting = id_type_shooting;
         this.name = name;
@@ -30,5 +31,13 @@ public class TypeShooting {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id_type_shooting\":" + id_type_shooting +
+                ", \"name\":\"" + name + '\"' +
+                '}';
     }
 }

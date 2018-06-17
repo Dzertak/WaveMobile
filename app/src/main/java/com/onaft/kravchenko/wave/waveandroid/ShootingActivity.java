@@ -9,13 +9,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.onaft.kravchenko.wave.waveandroid.fragment.CreateShootingEventFragment;
 import com.onaft.kravchenko.wave.waveandroid.fragment.CreateShootingGroupFragment;
+import com.onaft.kravchenko.wave.waveandroid.manage.ConstantManager;
 import com.onaft.kravchenko.wave.waveandroid.manage.DataManager;
+import com.onaft.kravchenko.wave.waveandroid.model.Account;
 import com.onaft.kravchenko.wave.waveandroid.model.Customer;
 import com.onaft.kravchenko.wave.waveandroid.model.Employee;
+import com.onaft.kravchenko.wave.waveandroid.model.Event;
 import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +33,6 @@ import static android.view.View.GONE;
 
 public class ShootingActivity extends AppCompatActivity {
 
-    private View mProgressView;
     private ArrayList<Integer> mArrayListFlags;
     private DataManager mDataManager;
     private FloatingActionButton mFloatingActionButton;
@@ -37,7 +42,7 @@ public class ShootingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shooting);
         setupActionBar();
-        mFloatingActionButton = findViewById(R.id.fab_shooting_edit);
+
 
 
         mArrayListFlags = new ArrayList<>();
@@ -46,16 +51,19 @@ public class ShootingActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         boolean key = getIntent().getBooleanExtra("shooting_type", false);
-        String id_shooting = getIntent().getStringExtra("id_shooting");
+        Gson gson = new Gson();
+        String json = getIntent().getStringExtra("event");
+        Type type = new TypeToken<Event>() {
+        }.getType();
+        Event event = gson.fromJson(json, type);
 
         if (!key){
             fragmentManager.beginTransaction().add(R.id.container_shooting,
                     CreateShootingGroupFragment.newInstance(this), CreateShootingGroupFragment.TAG).commit();
-            mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.check));
+
         } else {
             fragmentManager.beginTransaction().add(R.id.container_shooting,
-                    CreateShootingEventFragment.newInstance(this, id_shooting), CreateShootingEventFragment.TAG).commit();
-            mFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.pencil));
+                    CreateShootingEventFragment.newInstance(this, event), CreateShootingEventFragment.TAG).commit();
         }
 
 
@@ -67,6 +75,7 @@ public class ShootingActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
+            actionBar.setTitle("Shooting");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
