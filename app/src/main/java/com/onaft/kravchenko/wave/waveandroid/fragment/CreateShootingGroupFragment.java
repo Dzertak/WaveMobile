@@ -38,7 +38,9 @@ import com.onaft.kravchenko.wave.waveandroid.model.Employee;
 import com.onaft.kravchenko.wave.waveandroid.model.Event;
 import com.onaft.kravchenko.wave.waveandroid.model.Shooting;
 import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
+import com.onaft.kravchenko.wave.waveandroid.util.EmployeeSpinnerAdapter;
 import com.onaft.kravchenko.wave.waveandroid.util.ShootingGroupRequest;
+import com.onaft.kravchenko.wave.waveandroid.util.WorkRating;
 import com.toptoche.searchablespinnerlibrary.SearchableListDialog;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
@@ -365,12 +367,14 @@ public class CreateShootingGroupFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Employee>> call, Response<List<Employee>> response) {
 
+                List<Employee> employees = response.body();
+
                 List<String> operatorTitle = new ArrayList<>();
                 List<String> jurnalistTitle = new ArrayList<>();
                 List<String> driverTitle = new ArrayList<>();
 
-                for (int i=0; i<response.body().size(); i++){
-                    Employee employee = response.body().get(i);
+                for (int i=0; i<employees.size(); i++){
+                    Employee employee = employees.get(i);
                     if (employee.getPosition()==2){
                         mEmployeesOperator.add(employee);
                         operatorTitle.add(employee.getName());
@@ -382,20 +386,56 @@ public class CreateShootingGroupFragment extends Fragment {
                         driverTitle.add(employee.getName());
                     }
                 }
-                ArrayAdapter<CharSequence> adapterOperator = new ArrayAdapter(mContext,
-                        R.layout.textview_spinner_item, operatorTitle);
-                ArrayAdapter<CharSequence> adapterJurnalist = new ArrayAdapter(mContext,
-                        R.layout.textview_spinner_item, jurnalistTitle);
-                ArrayAdapter<CharSequence> adapterDriver = new ArrayAdapter(mContext,
-                        R.layout.textview_spinner_item, driverTitle);
+
+                Call<List<WorkRating>> listCall123 = mDataManager.findWorkRating();
+                listCall123.enqueue(new Callback<List<WorkRating>>() {
+                    @Override
+                    public void onResponse(Call<List<WorkRating>> call, Response<List<WorkRating>> response) {
+                        for (int i=0;i<employees.size();i++){
+                            for (int j=0; j<response.body().size();j++){
+                                if (employees.get(i).getId_employee()==response.body().get(j).getId_employee())
+                                employees.get(i).setWork_interest(response.body().get(j).getWork_interest());
+                            }
+                        }
+
+                        EmployeeSpinnerAdapter adapterOperator = new EmployeeSpinnerAdapter(mContext, new ArrayList<>(mEmployeesOperator));
+                        EmployeeSpinnerAdapter adapterJurnalist = new EmployeeSpinnerAdapter(mContext, new ArrayList<>(mEmployeesJurnalist));
+                        EmployeeSpinnerAdapter adapterDriver = new EmployeeSpinnerAdapter(mContext, new ArrayList<>(mEmployeesDriver));
+
+
+                        adapterOperator.setDropDownViewResource(R.layout.list_item_spinner_employee);
+                        adapterJurnalist.setDropDownViewResource(R.layout.list_item_spinner_employee);
+                        adapterDriver.setDropDownViewResource(R.layout.textview_spinner_item);
+
+                        mSearchableSpinnerOperator.setAdapter(adapterOperator);
+                        mSearchableSpinnerJurnalist.setAdapter(adapterJurnalist);
+                        mSearchableSpinnerDriver.setAdapter(adapterDriver);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<WorkRating>> call, Throwable t) {
+
+                        ArrayAdapter<CharSequence> adapterOperator = new ArrayAdapter(mContext,
+                                R.layout.textview_spinner_item, operatorTitle);
+                        ArrayAdapter<CharSequence> adapterJurnalist = new ArrayAdapter(mContext,
+                                R.layout.textview_spinner_item, jurnalistTitle);
+                        ArrayAdapter<CharSequence> adapterDriver = new ArrayAdapter(mContext,
+                                R.layout.textview_spinner_item, driverTitle);
+
+                        adapterOperator.setDropDownViewResource(R.layout.textview_spinner_item);
+                        adapterJurnalist.setDropDownViewResource(R.layout.textview_spinner_item);
+                        adapterDriver.setDropDownViewResource(R.layout.textview_spinner_item);
+
+                        mSearchableSpinnerOperator.setAdapter(adapterOperator);
+                        mSearchableSpinnerJurnalist.setAdapter(adapterJurnalist);
+                        mSearchableSpinnerDriver.setAdapter(adapterDriver);
+                    }
+                });
+
+
 
                 // Specify layout to be used when list of choices appears
-                adapterOperator.setDropDownViewResource(R.layout.textview_spinner_item);
-                adapterJurnalist.setDropDownViewResource(R.layout.textview_spinner_item);
-                adapterDriver.setDropDownViewResource(R.layout.textview_spinner_item);
-                mSearchableSpinnerOperator.setAdapter(adapterOperator);
-                mSearchableSpinnerJurnalist.setAdapter(adapterJurnalist);
-                mSearchableSpinnerDriver.setAdapter(adapterDriver);
+
             }
 
             @Override

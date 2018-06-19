@@ -11,6 +11,7 @@ import com.onaft.kravchenko.wave.waveandroid.model.Event;
 import com.onaft.kravchenko.wave.waveandroid.model.Shooting;
 import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
 import com.onaft.kravchenko.wave.waveandroid.util.ShootingGroupRequest;
+import com.onaft.kravchenko.wave.waveandroid.util.WorkRating;
 
 import java.util.List;
 
@@ -107,5 +108,9 @@ public class DataManager {
 
     public Call<String> deleteShooting(String id_shooting){
         return mShootingRestService.deleteShooting(id_shooting);
+    }
+
+    public Call<List<WorkRating>> findWorkRating(){
+        return mShootingRestService.findWorkRating();
     }
 }

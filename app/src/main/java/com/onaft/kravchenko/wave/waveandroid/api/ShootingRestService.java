@@ -9,6 +9,7 @@ import com.onaft.kravchenko.wave.waveandroid.model.Shooting;
 import com.onaft.kravchenko.wave.waveandroid.model.ShootingGroup;
 import com.onaft.kravchenko.wave.waveandroid.model.TypeShooting;
 import com.onaft.kravchenko.wave.waveandroid.util.ShootingGroupRequest;
+import com.onaft.kravchenko.wave.waveandroid.util.WorkRating;
 
 import java.util.List;
 
@@ -70,4 +71,7 @@ public interface ShootingRestService {
 
     @DELETE("entities/deleteShooting")
     Call<String> deleteShooting(@Query("id_shooting") String id_shooting);
+
+    @GET("entities/findWorkRating")
+    Call<List<WorkRating>> findWorkRating();
 }

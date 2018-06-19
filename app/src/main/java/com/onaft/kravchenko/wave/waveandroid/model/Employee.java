@@ -28,6 +28,8 @@ public class Employee {
     @Expose
     private int id_position;
 
+    private int work_interest;
+
     public Employee(int id_employee, String name, String code_pas, String code_ident, String phone, String address, int id_position) {
         this.id_employee = id_employee;
         this.name = name;
@@ -94,16 +96,17 @@ public class Employee {
         this.id_position = position;
     }
 
+    public int getWork_interest() {
+        return work_interest;
+    }
+
+    public void setWork_interest(int work_interest) {
+        this.work_interest = work_interest;
+    }
+
     @Override
     public String toString() {
-        return "Employee{" +
-                "id_employee=" + id_employee +
-                ", name='" + name + '\'' +
-                ", code_pas='" + code_pas + '\'' +
-                ", code_ident='" + code_ident + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", id_position=" + id_position +
-                '}';
+        return name+" "+String.valueOf(100-work_interest)+"%";
+
     }
 }
